@@ -1,4 +1,5 @@
-# claimvalue-ml
+# README.md 
+### claimvalue-ml
 
 Leakage-safe ML pipeline that predicts **claim value** (regression) and **ruling outcome** (classification) from
 court-case data, with LGPD-oriented anonymization, a SQL feature layer, EDA as code, and MLOps basics.
