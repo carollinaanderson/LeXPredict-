@@ -1,0 +1,131 @@
+# 🏛 CAPSTONE — LexRAG-BR (Legal Document Analyzer)
+
+#estudos #ai-mermaid #portfolio #capstone #status-ativo
+
+> Source: item 4 of Month 12 in [[Projetos Portfolio IA]] (Analisador de documentos legais).
+> Goal: one repo that touches every month of [[AI Mermaid Plano]], ends in a live demo, and doubles as content for [[GitHub Monetização]].
+
+## 1. Why this project
+
+| Criterion | Fit |
+|---|---|
+| Curriculum coverage | Months 1–12 + Extra (see §4) |
+| Existing edge | Prior large-scale document pipeline experience (see [[Banco de Numeros]]) |
+| Gap closing | Hits 🚨 Math/Stats, ⚠️ ML, ⏳ DL, MLOps, Transformers, Transfer Learning, NLP/LLMs, RAG |
+| Portfolio | Quarto write-up + live demo + GitHub repo ([[Fontes de Dados Portfolio]]) |
+| Research link | Text/sequence analysis → bridge to PhD direction ([[Literatura Pesquisa PhD]]) |
+| Monetization | Tutorial per stage; template/roadmap product |
+
+## 2. Problem statement
+
+Given Brazilian public court decisions, build a system that:
+1. **Classifies** each decision (area of law, and outcome if labeled).
+2. **Retrieves** relevant precedents for a natural-language question.
+3. **Answers with citations** (case number + passage), refusing when evidence is missing.
+
+Data: public decisions/legislation from dados.gov.br or basedosdados.org (verify licence and schema before ingesting). Public data only, no client material.
+
+## 3. Architecture
+
+| # | Stage | Tools | Output |
+|---|---|---|---|
+| 1 | Ingest | Python, requests/pandas | Raw corpus (`data/raw`) |
+| 2 | Store | SQLite → Postgres, SQL | Tables: `decisions`, `chunks`, `labels` |
+| 3 | EDA | Pandas, Matplotlib, Quarto | Length/class distributions, missingness, leakage check |
+| 4 | Stats | SciPy/statsmodels | Class-imbalance tests, CIs on all metrics |
+| 5 | Baseline ML | TF-IDF + LogReg/LinearSVC (Scikit-Learn) | Baseline F1 |
+| 6 | Deep learning | PyTorch, BERTimbau fine-tune | Transfer-learning classifier |
+| 7 | Chunk + embed | Sentence-Transformers (multilingual) | Vectors |
+| 8 | Vector DB | Faiss (local) → Qdrant/Milvus (stretch) | Index + metadata filters |
+| 9 | RAG | LangChain or plain Python, Claude API | Cited answers + refusal rule |
+| 10 | Evaluation | Hit@k, MRR, faithfulness, answer relevance | `eval/report.md` |
+| 11 | Serve | FastAPI + Streamlit | `/classify`, `/ask` |
+| 12 | MLOps | MLflow, Docker, GitHub Actions, DVC | Tracked runs, CI, container |
+| 13 | Deploy + publish | HF Spaces/Render, Quarto | Live demo + case study |
+
+## 4. Curriculum map
+
+| Month | Topic | Capstone deliverable |
+|---|---|---|
+| 1 | Python | Ingestion + cleaning modules |
+| 2 | Math & Stats | Confidence intervals, significance tests between models, cosine similarity derivation |
+| 3 | EDA | Quarto EDA report |
+| 4 | ML | TF-IDF baseline with cross-validation |
+| 5 | Deep Learning | PyTorch training loop (own, not only Trainer) |
+| 6 | Git & GitHub | Branching, PRs, releases, CI |
+| 7 | SQL | Schema, joins, analytical queries |
+| 8 | MLOps | MLflow + Docker + CI + data versioning |
+| 9 | Transformers | Attention walkthrough notebook |
+| 10 | Transfer Learning | BERTimbau fine-tune vs baseline |
+| 11 | NLP & LLMs | Prompting, citation format, refusal behavior |
+| 12 | Vector DBs & RAG | Index, retrieval, evaluation |
+| Extra | GenAI & Prompts | Prompt versions tracked and A/B tested |
+
+## 5. Plan (8 sprints, 1 week each)
+
+| Sprint | Focus | Done when |
+|---|---|---|
+| 1 | Repo, data source, ingestion, SQL schema | ≥ 10k docs in DB, README v0 |
+| 2 | EDA + stats | Quarto EDA published, label strategy fixed |
+| 3 | Baseline ML | Cross-validated baseline + MLflow run |
+| 4 | Transformer fine-tune | Beats baseline, significance test reported |
+| 5 | Chunking, embeddings, vector index | Hit@5 measured on 50 hand-written queries |
+| 6 | RAG + citations + refusal | Faithfulness check on 50 queries |
+| 7 | API, UI, Docker, CI | `docker compose up` runs everything |
+| 8 | Deploy, write-up, content | Live URL + case study + 3 tutorials |
+
+## 6. Repo structure
+
+```
+lexrag-br/
+├── data/            # raw/ processed/ (DVC-tracked, not in git)
+├── notebooks/       # 01_eda, 02_baseline, 03_finetune, 04_retrieval
+├── src/
+│   ├── ingest/  db/  features/  models/  retrieval/  rag/  api/
+├── eval/            # queries.jsonl, metrics, report.md
+├── app/             # Streamlit UI
+├── tests/
+├── docker/  .github/workflows/
+├── quarto/          # portfolio case study
+└── README.md        # problem, architecture diagram, results table, demo link
+```
+
+## 7. Evaluation targets
+
+| Component | Metric | Target |
+|---|---|---|
+| Baseline classifier | Macro-F1 | Reported with CI |
+| Fine-tuned model | Macro-F1 | > baseline, p < 0.05 |
+| Retrieval | Hit@5 / MRR | Hit@5 ≥ 0.80 on own query set |
+| RAG answers | Faithfulness (manual, 50 q) | ≥ 90% supported by cited passage |
+| Refusal | Correct "no evidence" rate | Tested on 20 out-of-corpus questions |
+| Ops | Cold start, latency p95 | Documented |
+
+## 8. Risks
+
+| Risk | Mitigation |
+|---|---|
+| Labels weak or missing | Start with area-of-law from metadata; hand-label a 300-doc gold set |
+| Long documents | Section-aware chunking + overlap; test chunk sizes |
+| Hallucinated citations | Return only retrieved IDs; verify quotes against source |
+| Scope creep | Faiss first; Qdrant/Milvus and multi-agent are stretch only |
+| Legal advice misuse | Disclaimer in UI: research tool, not legal advice |
+
+## 9. Definition of done
+
+- [ ] Live demo URL
+- [ ] `docker compose up` works from a clean clone
+- [ ] CI green (lint, tests, smoke eval)
+- [ ] Results table with CIs in README
+- [ ] Quarto case study published
+- [ ] 3 tutorials drafted (EDA→baseline, fine-tune, RAG eval) → [[GitHub Monetização]]
+- [ ] Added to [[Portfolio]]
+
+## 10. Start now (first 3 tasks)
+
+1. Pick the exact public dataset and confirm licence/schema.
+2. Create repo `lexrag-br` with the structure above and push README v0.
+3. Write the SQL schema and ingest the first 1,000 documents.
+
+## Conecta
+[[AI Mermaid Plano]] · [[Projetos Portfolio IA]] · [[Portfolio]] · [[GitHub Monetização]] · [[Fontes de Dados Portfolio]]
