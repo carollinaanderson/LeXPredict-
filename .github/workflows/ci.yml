@@ -1,0 +1,71 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: pip install -e ".[dev,api]"
+      - run: ruff check . && ruff format --check .
+      - run: pytest --cov=claimvalue --cov-report=term-missing
+
+  pipeline-smoke:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[api,eda]"
+      - name: End-to-end run on synthetic data
+        run: |
+          export ANONYMIZATION_PEPPER=$(openssl rand -hex 32)
+          claimvalue pipeline --n 3000 --n-iter 2
+          claimvalue check-pii
+
+  book-smoke:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[dev,api,eda]" pyreadr
+      - name: End-to-end run on the ABJ book dataset
+        run: |
+          claimvalue book-fetch
+          claimvalue book-prepare
+          claimvalue book-build-db
+          claimvalue book-train --task regression --n-iter 1
+          claimvalue book-check-pii
+
+  secrets-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t claimvalue-api .
