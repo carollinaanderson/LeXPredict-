@@ -1,0 +1,567 @@
+{
+  "dataset": "abjData::consumo",
+  "book": "Feliz & Trecenti (2022), Metodologia de Pesquisa Jurimétrica, ABJ",
+  "licence": "MIT",
+  "run_date": "2026-11-11",
+  "candidates": [
+    "decision_tree",
+    "dummy_median",
+    "dummy_prior",
+    "hist_gbm",
+    "lightgbm",
+    "random_forest",
+    "xgboost"
+  ],
+  "privacy": "Aggregate metrics only. This file contains no case-level rows, raw case numbers, names, CPFs, CNPJs, addresses, .env values, database files, prepared CSV files or model binaries.",
+  "reproduce": "Run `claimvalue book-pipeline --n-iter 4`, then `python scripts/export_public_results.py`.",
+  "tasks": {
+    "regression": {
+      "task": "regression",
+      "target": "claim_value",
+      "selected_model": "decision_tree",
+      "test_metrics": {
+        "test_mae": 14862.17955506696,
+        "test_medae": 6170.363721615337,
+        "test_rmse": 35594.16988705503,
+        "test_rmsle": 1.101017883517054,
+        "test_r2": -0.09593802607110935,
+        "test_mdape": 0.5800720479278338
+      },
+      "primary_metric": "mae_brl",
+      "primary_metric_ci95": [
+        10782.434592463043,
+        19708.739883580936
+      ],
+      "secondary_metric": null,
+      "secondary_metric_ci95": null,
+      "baseline_model": "dummy_median",
+      "baseline_test_metrics": {
+        "mae": 14958.916649214658,
+        "medae": 9624.079999999998,
+        "rmse": 34447.41652963065,
+        "rmsle": 1.1386979727956013,
+        "r2": -0.02645891512450671,
+        "mdape": 0.5640300847077936
+      },
+      "p_value_vs_baseline": {
+        "test": "wilcoxon_signed_rank",
+        "alternative": "two-sided",
+        "metric": "absolute_error_brl",
+        "statistic": 8345.5,
+        "p_value": 0.2804011479270042,
+        "n_pairs": 191,
+        "median_loss_model": 6170.363721615337,
+        "median_loss_baseline": 9624.079999999998,
+        "median_loss_difference": -1681.5139586691039,
+        "interpretation": "A small p-value means the per-case loss distribution differs from the no-skill baseline. It does not establish causation, calibration or practical value."
+      },
+      "best_params": {
+        "regressor__model__min_samples_leaf": 30,
+        "regressor__model__max_depth": 3
+      },
+      "n_train": 761,
+      "n_test": 191,
+      "cutoff_date": "2021-04-26",
+      "features": [
+        "assunto",
+        "tipo_litigio",
+        "comarca",
+        "filing_month",
+        "filing_year",
+        "comarca_n_prior",
+        "comarca_avg_value_prior",
+        "comarca_reform_rate_prior",
+        "assunto_n_prior",
+        "assunto_avg_value_prior",
+        "assunto_reform_rate_prior"
+      ],
+      "versions": {
+        "python": "3.12.13",
+        "sklearn": "1.9.1",
+        "pandas": "3.1.1",
+        "numpy": "2.5.4",
+        "xgboost": "3.4.1",
+        "lightgbm": "4.7.0",
+        "shap": "0.54.1"
+      },
+      "leaderboard": [
+        {
+          "model": "decision_tree",
+          "cv_score": -34717.45257334701,
+          "cv_score_std": 14967.672918733273,
+          "test_mae": 14862.17955506696,
+          "test_medae": 6170.363721615337,
+          "test_rmse": 35594.16988705503,
+          "test_rmsle": 1.101017883517054,
+          "test_r2": -0.09593802607110935,
+          "test_mdape": 0.5800720479278338
+        },
+        {
+          "model": "random_forest",
+          "cv_score": -35073.86197737121,
+          "cv_score_std": 14663.954724695122,
+          "test_mae": 14259.09435646753,
+          "test_medae": 6517.905641097375,
+          "test_rmse": 34443.94711206295,
+          "test_rmsle": 1.060227036262661,
+          "test_r2": -0.02625216317529433,
+          "test_mdape": 0.5416662546528279
+        },
+        {
+          "model": "lightgbm",
+          "cv_score": -35134.23118425901,
+          "cv_score_std": 14691.749263944248,
+          "test_mae": 14431.703878622733,
+          "test_medae": 7025.717850219406,
+          "test_rmse": 32874.632896750525,
+          "test_rmsle": 1.0656194562698376,
+          "test_r2": 0.0651324574894353,
+          "test_mdape": 0.5824897979021261
+        },
+        {
+          "model": "hist_gbm",
+          "cv_score": -35375.5400433371,
+          "cv_score_std": 14626.681832322956,
+          "test_mae": 15164.696542389813,
+          "test_medae": 7592.487826572542,
+          "test_rmse": 33219.55843480333,
+          "test_rmsle": 1.1062919064909527,
+          "test_r2": 0.04541200381064281,
+          "test_mdape": 0.6416686797626286
+        },
+        {
+          "model": "dummy_median",
+          "cv_score": -35493.80144736842,
+          "cv_score_std": 14639.968256750713,
+          "test_mae": 14958.916649214658,
+          "test_medae": 9624.079999999998,
+          "test_rmse": 34447.41652963065,
+          "test_rmsle": 1.1386979727956013,
+          "test_r2": -0.02645891512450671,
+          "test_mdape": 0.5640300847077936
+        },
+        {
+          "model": "xgboost",
+          "cv_score": -36184.8335409064,
+          "cv_score_std": 15048.864159406035,
+          "test_mae": 16066.270903652648,
+          "test_medae": 9201.0576171875,
+          "test_rmse": 33801.86669951715,
+          "test_rmsle": 1.1757832598469884,
+          "test_r2": 0.01165259205501723,
+          "test_mdape": 0.6528734901884637
+        }
+      ],
+      "permutation_importance_top10": [
+        {
+          "feature": "assunto",
+          "importance": 4833.093156222005
+        },
+        {
+          "feature": "tipo_litigio",
+          "importance": 1921.5521786447139
+        },
+        {
+          "feature": "assunto_avg_value_prior",
+          "importance": 59.008966416044494
+        },
+        {
+          "feature": "assunto_n_prior",
+          "importance": 7.435565922606474
+        },
+        {
+          "feature": "comarca",
+          "importance": 0.0
+        },
+        {
+          "feature": "filing_month",
+          "importance": 0.0
+        },
+        {
+          "feature": "filing_year",
+          "importance": 0.0
+        },
+        {
+          "feature": "comarca_n_prior",
+          "importance": 0.0
+        },
+        {
+          "feature": "comarca_avg_value_prior",
+          "importance": 0.0
+        },
+        {
+          "feature": "comarca_reform_rate_prior",
+          "importance": 0.0
+        }
+      ],
+      "shap": {
+        "explainer": "TreeExplainer (exact, tree-specific)",
+        "n_cases_explained": 191,
+        "additivity_max_error": 1.7763568394002505e-15,
+        "additivity_ok": true,
+        "output_space": "log1p(BRL)",
+        "top5_global": [
+          {
+            "feature": "assunto_Fornecimento de Energia",
+            "mean_abs_shap": 0.44821756986559996
+          },
+          {
+            "feature": "assunto_n_prior",
+            "mean_abs_shap": 0.2241448592098786
+          },
+          {
+            "feature": "tipo_litigio_nPF-nPF",
+            "mean_abs_shap": 0.1420459428341155
+          },
+          {
+            "feature": "assunto_avg_value_prior",
+            "mean_abs_shap": 0.10200522552274309
+          },
+          {
+            "feature": "assunto_Bancários",
+            "mean_abs_shap": 0.0
+          }
+        ],
+        "global_top10": [
+          {
+            "feature": "assunto_Fornecimento de Energia",
+            "mean_abs_shap": 0.44821756986559996,
+            "mean_shap_signed": -0.12155902686049005,
+            "share_pct": 48.90996501158898
+          },
+          {
+            "feature": "assunto_n_prior",
+            "mean_abs_shap": 0.2241448592098786,
+            "mean_shap_signed": -0.20018829986288,
+            "share_pct": 24.45891896823674
+          },
+          {
+            "feature": "tipo_litigio_nPF-nPF",
+            "mean_abs_shap": 0.1420459428341155,
+            "mean_shap_signed": 0.011415326220309488,
+            "share_pct": 15.500200262426093
+          },
+          {
+            "feature": "assunto_avg_value_prior",
+            "mean_abs_shap": 0.10200522552274309,
+            "mean_shap_signed": 0.06943190994418029,
+            "share_pct": 11.130915757748193
+          },
+          {
+            "feature": "assunto_Bancários",
+            "mean_abs_shap": 0.0,
+            "mean_shap_signed": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "feature": "filing_month",
+            "mean_abs_shap": 0.0,
+            "mean_shap_signed": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "feature": "comarca_reform_rate_prior",
+            "mean_abs_shap": 0.0,
+            "mean_shap_signed": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "feature": "comarca_avg_value_prior",
+            "mean_abs_shap": 0.0,
+            "mean_shap_signed": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "feature": "comarca_n_prior",
+            "mean_abs_shap": 0.0,
+            "mean_shap_signed": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "feature": "filing_year",
+            "mean_abs_shap": 0.0,
+            "mean_shap_signed": 0.0,
+            "share_pct": 0.0
+          }
+        ]
+      }
+    },
+    "classification": {
+      "task": "classification",
+      "target": "reformed",
+      "selected_model": "lightgbm",
+      "test_metrics": {
+        "test_roc_auc": 0.5301535087719299,
+        "test_pr_auc": 0.5210299862191854,
+        "test_brier": 0.25505807575630035,
+        "test_f1": 0.6108786610878661,
+        "test_accuracy": 0.5130890052356021,
+        "test_base_rate": 0.5026178010471204
+      },
+      "primary_metric": "brier",
+      "primary_metric_ci95": [
+        0.241015484392116,
+        0.2695767102470897
+      ],
+      "secondary_metric": "roc_auc",
+      "secondary_metric_ci95": [
+        0.44764920468935876,
+        0.62024640770953
+      ],
+      "baseline_model": "dummy_prior",
+      "baseline_test_metrics": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.5026178010471204,
+        "brier": 0.25217955616014154,
+        "f1": 0.0,
+        "accuracy": 0.4973821989528796,
+        "base_rate": 0.5026178010471204
+      },
+      "p_value_vs_baseline": {
+        "test": "wilcoxon_signed_rank",
+        "alternative": "two-sided",
+        "metric": "brier_score_per_case",
+        "statistic": 9019.0,
+        "p_value": 0.8455715482470045,
+        "n_pairs": 191,
+        "median_loss_model": 0.24455484866349553,
+        "median_loss_baseline": 0.29608970213511493,
+        "median_loss_difference": -0.021434080809382527,
+        "interpretation": "A small p-value means the per-case loss distribution differs from the no-skill baseline. It does not establish causation, calibration or practical value."
+      },
+      "best_params": {
+        "model__reg_lambda": 1.0,
+        "model__num_leaves": 31,
+        "model__min_child_samples": 100,
+        "model__learning_rate": 0.03
+      },
+      "n_train": 623,
+      "n_test": 191,
+      "cutoff_date": "2021-04-26",
+      "features": [
+        "assunto",
+        "tipo_litigio",
+        "comarca",
+        "filing_month",
+        "filing_year",
+        "comarca_n_prior",
+        "comarca_avg_value_prior",
+        "comarca_reform_rate_prior",
+        "assunto_n_prior",
+        "assunto_avg_value_prior",
+        "assunto_reform_rate_prior",
+        "claim_value_log"
+      ],
+      "versions": {
+        "python": "3.12.13",
+        "sklearn": "1.9.1",
+        "pandas": "3.1.1",
+        "numpy": "2.5.4",
+        "xgboost": "3.4.1",
+        "lightgbm": "4.7.0",
+        "shap": "0.54.1"
+      },
+      "leaderboard": [
+        {
+          "model": "lightgbm",
+          "cv_score": -0.24744417494075838,
+          "cv_score_std": 0.003715152490706806,
+          "test_roc_auc": 0.5301535087719299,
+          "test_pr_auc": 0.5210299862191854,
+          "test_brier": 0.25505807575630035,
+          "test_f1": 0.6108786610878661,
+          "test_accuracy": 0.5130890052356021,
+          "test_base_rate": 0.5026178010471204
+        },
+        {
+          "model": "random_forest",
+          "cv_score": -0.24933046240113554,
+          "cv_score_std": 0.004703976527023229,
+          "test_roc_auc": 0.5349232456140351,
+          "test_pr_auc": 0.5286314301892043,
+          "test_brier": 0.24891872151734407,
+          "test_f1": 0.4457831325301205,
+          "test_accuracy": 0.518324607329843,
+          "test_base_rate": 0.5026178010471204
+        },
+        {
+          "model": "dummy_prior",
+          "cv_score": -0.24991111138826513,
+          "cv_score_std": 0.006948581208443505,
+          "test_roc_auc": 0.5,
+          "test_pr_auc": 0.5026178010471204,
+          "test_brier": 0.25217955616014154,
+          "test_f1": 0.0,
+          "test_accuracy": 0.4973821989528796,
+          "test_base_rate": 0.5026178010471204
+        },
+        {
+          "model": "decision_tree",
+          "cv_score": -0.25513094089837934,
+          "cv_score_std": 0.009200173468578144,
+          "test_roc_auc": 0.5364035087719298,
+          "test_pr_auc": 0.5166045966816045,
+          "test_brier": 0.25292590478462634,
+          "test_f1": 0.4268292682926829,
+          "test_accuracy": 0.5078534031413613,
+          "test_base_rate": 0.5026178010471204
+        },
+        {
+          "model": "hist_gbm",
+          "cv_score": -0.25689596824121397,
+          "cv_score_std": 0.009356910939759693,
+          "test_roc_auc": 0.5065789473684211,
+          "test_pr_auc": 0.5185325090437372,
+          "test_brier": 0.2596582672321003,
+          "test_f1": 0.5739910313901345,
+          "test_accuracy": 0.5026178010471204,
+          "test_base_rate": 0.5026178010471204
+        },
+        {
+          "model": "xgboost",
+          "cv_score": -0.26405615359544754,
+          "cv_score_std": 0.011305786033417189,
+          "test_roc_auc": 0.490515350877193,
+          "test_pr_auc": 0.506939908141841,
+          "test_brier": 0.2751239040108175,
+          "test_f1": 0.6104417670682731,
+          "test_accuracy": 0.49214659685863876,
+          "test_base_rate": 0.5026178010471204
+        }
+      ],
+      "permutation_importance_top10": [
+        {
+          "feature": "tipo_litigio",
+          "importance": 0.010040221096848202
+        },
+        {
+          "feature": "comarca_reform_rate_prior",
+          "importance": 0.0035590041708391416
+        },
+        {
+          "feature": "assunto_avg_value_prior",
+          "importance": 0.0014487723010318753
+        },
+        {
+          "feature": "comarca_avg_value_prior",
+          "importance": 0.0006594275031289509
+        },
+        {
+          "feature": "assunto",
+          "importance": 0.0002075751749066379
+        },
+        {
+          "feature": "filing_year",
+          "importance": 0.0
+        },
+        {
+          "feature": "claim_value_log",
+          "importance": 0.0
+        },
+        {
+          "feature": "assunto_n_prior",
+          "importance": -0.0006970144982086479
+        },
+        {
+          "feature": "comarca",
+          "importance": -0.0013433272833886511
+        },
+        {
+          "feature": "comarca_n_prior",
+          "importance": -0.0017064810556206456
+        }
+      ],
+      "shap": {
+        "explainer": "TreeExplainer (exact, tree-specific)",
+        "n_cases_explained": 191,
+        "additivity_max_error": 1.1102230246251565e-15,
+        "additivity_ok": true,
+        "output_space": "log-odds (decision function)",
+        "top5_global": [
+          {
+            "feature": "tipo_litigio_PF-nPF",
+            "mean_abs_shap": 0.19109783543085698
+          },
+          {
+            "feature": "filing_month",
+            "mean_abs_shap": 0.13387769502159566
+          },
+          {
+            "feature": "assunto_avg_value_prior",
+            "mean_abs_shap": 0.11890501346203325
+          },
+          {
+            "feature": "comarca_reform_rate_prior",
+            "mean_abs_shap": 0.11191669117815199
+          },
+          {
+            "feature": "assunto_n_prior",
+            "mean_abs_shap": 0.10021793874972523
+          }
+        ],
+        "global_top10": [
+          {
+            "feature": "tipo_litigio_PF-nPF",
+            "mean_abs_shap": 0.19109783543085698,
+            "mean_shap_signed": -0.006854452187725184,
+            "share_pct": 19.947811024472863
+          },
+          {
+            "feature": "filing_month",
+            "mean_abs_shap": 0.13387769502159566,
+            "mean_shap_signed": 0.10803274102001297,
+            "share_pct": 13.974867662219367
+          },
+          {
+            "feature": "assunto_avg_value_prior",
+            "mean_abs_shap": 0.11890501346203325,
+            "mean_shap_signed": 0.07335588620604773,
+            "share_pct": 12.411939324457915
+          },
+          {
+            "feature": "comarca_reform_rate_prior",
+            "mean_abs_shap": 0.11191669117815199,
+            "mean_shap_signed": 0.04095616507818854,
+            "share_pct": 11.682460981688228
+          },
+          {
+            "feature": "assunto_n_prior",
+            "mean_abs_shap": 0.10021793874972523,
+            "mean_shap_signed": 0.09696772278883906,
+            "share_pct": 10.461282823713825
+          },
+          {
+            "feature": "comarca",
+            "mean_abs_shap": 0.09705071918033457,
+            "mean_shap_signed": -0.013177979762950782,
+            "share_pct": 10.130671556973041
+          },
+          {
+            "feature": "assunto_reform_rate_prior",
+            "mean_abs_shap": 0.09580411589110387,
+            "mean_shap_signed": 0.08282787507606355,
+            "share_pct": 10.000544458568216
+          },
+          {
+            "feature": "comarca_n_prior",
+            "mean_abs_shap": 0.05477467602700893,
+            "mean_shap_signed": 0.040439431586876094,
+            "share_pct": 5.717672750452663
+          },
+          {
+            "feature": "tipo_litigio_nPF-PF",
+            "mean_abs_shap": 0.0304001887165523,
+            "mean_shap_signed": -0.0007690934970205488,
+            "share_pct": 3.1733337965803985
+          },
+          {
+            "feature": "comarca_avg_value_prior",
+            "mean_abs_shap": 0.015589992073394253,
+            "mean_shap_signed": 0.009682825471406828,
+            "share_pct": 1.627366500787077
+          }
+        ]
+      }
+    }
+  }
+}

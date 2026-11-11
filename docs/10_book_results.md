@@ -286,6 +286,11 @@ No dataset or model artefact is committed. The repository contains only code,
 documentation and the provenance metadata in
 `src/claimvalue/data/book/SOURCE.md` and `SOURCE.json`.
 
+A **privacy-safe aggregate snapshot** is committed under [`reports/book/`](../reports/book/):
+`results.json` (leaderboards, p-values, permutation importance and SHAP
+summaries), two aggregate SHAP bar charts, and a README. It contains no
+case-level rows, raw data, `.env` values or model binaries.
+
 ## 9. Credits
 
 The dataset and the method come from ABJ:

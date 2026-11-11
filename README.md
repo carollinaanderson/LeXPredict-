@@ -38,6 +38,9 @@ per-case explanations.
 
 Full tables, SHAP attribution and limitations: [`docs/10_book_results.md`](docs/10_book_results.md).
 
+Privacy-safe aggregate snapshot (metrics, p-values, SHAP summaries and two
+aggregate bar charts, with no case-level data): [`reports/book/`](reports/book/).
+
 ## Data and credits
 
 The main dataset is `consumo`, a 1,000-row sample of TJSP second-degree consumer
