@@ -7,6 +7,11 @@
 > real legal case, and contains no confidential or NDA-protected material. See
 > [`DISCLAIMER.md`](DISCLAIMER.md), [`CREDITS.md`](CREDITS.md) and
 > [`docs/09_book_dataset.md`](docs/09_book_dataset.md).
+>
+> **Data status.** The public analysis uses real, public court metadata from the
+> Court of Justice of São Paulo (TJSP), distributed by ABJ in `abjData::consumo`.
+> It is not synthetic and not employer data. The synthetic records in this
+> repository are test fixtures only and are never used for the public results.
 
 The project studies two questions on second-degree consumer appeals from São
 Paulo:
@@ -37,14 +42,18 @@ split, leakage-safe history, explicit baselines, bootstrap intervals and
 per-case explanations.
 
 Full tables, SHAP attribution and limitations: [`docs/10_book_results.md`](docs/10_book_results.md).
+The same result, the jargon and the privacy boundary explained without statistics:
+[`docs/11_stakeholder_brief.md`](docs/11_stakeholder_brief.md).
 
 Privacy-safe aggregate snapshot (metrics, p-values, SHAP summaries and two
 aggregate bar charts, with no case-level data): [`reports/book/`](reports/book/).
 
 ## Data and credits
 
-The main dataset is `consumo`, a 1,000-row sample of TJSP second-degree consumer
-cases distributed in the `abjData` R package.
+The main dataset is `consumo`, a 1,000-row sample of **real, public second-degree
+consumer cases from the Court of Justice of São Paulo (TJSP)**, distributed in the
+`abjData` R package. It is the data behind every public result in this repository.
+It is not synthetic, not fabricated and not employer data.
 
 - No names, CPFs, CNPJs, addresses or free-text case descriptions.
 - The public case number is replaced by a stable SHA-256 pseudonym.
@@ -53,9 +62,12 @@ cases distributed in the `abjData` R package.
   directory (`RAW_DATA_DIR/book/`, default `data/raw/book/`); **no data file is
   committed**.
 - The data is used under the MIT licence, with attribution.
+- Filing dates run from 2015-06-17 to 2021-12-07; decision dates run from
+  2020-01-07 to 2021-12-21.
 
 The synthetic generator in `src/claimvalue/synthetic.py` remains only for
-automated tests and for a controlled benchmark. It is not the public analysis.
+automated tests and for a controlled benchmark. It is not the public analysis and
+none of its records appear in the published numbers.
 
 Citations:
 
@@ -65,6 +77,10 @@ Citations:
 > Trecenti, Julio; Hirota, Renata; Witkoski, Katerine; Associação Brasileira de
 > Jurimetria. **abjData: Databases Used Routinely by the Brazilian Jurimetrics
 > Association**. <https://github.com/abjur/abjData>. MIT licence.
+
+If you reuse the data or the method, cite both the book and the `abjData` package.
+The dataset is real public TJSP court metadata. The synthetic fixtures are
+separate and are not used in any public number.
 
 The exact upstream commit, file checksum and transformations are in
 [`src/claimvalue/data/book/SOURCE.md`](src/claimvalue/data/book/SOURCE.md) and
@@ -200,6 +216,7 @@ The documents that describe it carry a synthetic-testbed banner.
 | [`docs/06_shap.md`](docs/06_shap.md) | SHAP run report for the synthetic testbed |
 | [`docs/07_shap.md`](docs/07_shap.md) | SHAP method, worked example, units, plots, p-value vs SHAP |
 | [`docs/08_executive_summary.md`](docs/08_executive_summary.md) | Plain-language guide for non-technical readers (synthetic testbed) |
+| [`docs/11_stakeholder_brief.md`](docs/11_stakeholder_brief.md) | Plain-language guide to the **public** run: results, jargon, privacy boundary |
 | [`docs/LGPD.md`](docs/LGPD.md) | Pseudonymisation vs anonymisation, principles to code, risk assessment |
 | [`docs/data_dictionary.md`](docs/data_dictionary.md) | Every field: type, LGPD class, treatment |
 | [`DISCLAIMER.md`](DISCLAIMER.md) | Personal-study notice, data provenance and NDA declaration |
