@@ -22,12 +22,4 @@ committed without committing data.
 - No raw or prepared case-level data.
 - No `case_explanations.csv` or per-case SHAP tables.
 - No SQLite database, `.env` file, token, credential or model binary (`.joblib`).
-- No employer, client or NDA-protected material.
 
-The data is downloaded at runtime by `claimvalue book-fetch` into a gitignored
-directory. To regenerate this snapshot locally:
-
-```bash
-claimvalue book-pipeline --n-iter 4
-python scripts/export_public_results.py
-```
